@@ -1,3 +1,12 @@
+启动rocketmq（访问地址127.0.0.1:9876需要另外启动管理项目）
+cmd
+进入D:\rocketmq-all-4.4.0-bin-release\bin
+执行 start mqnamesrv.cmd
+执行 start mqbroker.cmd -n 127.0.0.1:9876 autoCreateTopicEnable=true
+
+http://localhost:9001/api/v1/order/save?userId=1&productId=1&total=4
+
+
 # <center>RocketMQ实现分布式事务</center>
 
 有关RocketMQ实现分布式事务前面写了一篇博客

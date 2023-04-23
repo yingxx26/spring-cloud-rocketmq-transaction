@@ -1,7 +1,6 @@
 package com.oujiong.service.produce.mqseivice;
 
 import com.alibaba.fastjson.JSONObject;
-import com.oujiong.service.produce.config.Jms;
 import com.oujiong.service.produce.service.ProduceService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.rocketmq.client.consumer.DefaultMQPushConsumer;
@@ -27,13 +26,13 @@ public class OrderConsumer {
 
     private String consumerGroup = "produce_consumer_group";
 
-    public OrderConsumer(@Autowired Jms jms, @Autowired ProduceService produceService) throws MQClientException {
+    public OrderConsumer(  @Autowired ProduceService produceService) throws MQClientException {
         //设置消费组
         consumer = new DefaultMQPushConsumer(consumerGroup);
         // 添加服务器地址
-        consumer.setNamesrvAddr(jms.getNameServer());
+        consumer.setNamesrvAddr("127.0.0.1:9876");
         // 添加订阅号
-        consumer.subscribe(jms.getOrderTopic(), "*");
+        consumer.subscribe("order_topic", "*");
         // 监听消息
         consumer.registerMessageListener((MessageListenerConcurrently) (msgs, context) -> {
             MessageExt msg = msgs.get(0);

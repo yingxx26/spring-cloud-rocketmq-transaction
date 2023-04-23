@@ -11,14 +11,7 @@ eureka:
 spring:
   application:
     name: order-service
-  #指定从哪个配置中心读取
-  cloud:
-    config:
-      discovery:
-        service-id: config-server-jdbc
-        enabled: true
-      profile: dev
-      label: dev
+
 
 
 

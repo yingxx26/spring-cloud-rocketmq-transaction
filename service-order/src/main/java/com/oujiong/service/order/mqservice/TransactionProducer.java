@@ -1,7 +1,6 @@
 package com.oujiong.service.order.mqservice;
 
 import com.alibaba.fastjson.JSONObject;
-import com.oujiong.service.order.config.Jms;
 import com.oujiong.service.order.service.ProduceOrderService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.rocketmq.client.exception.MQClientException;
@@ -49,12 +48,12 @@ public class TransactionProducer {
 
     });
 
-    public TransactionProducer(@Autowired Jms jms, @Autowired ProduceOrderService produceOrderService) {
+    public TransactionProducer(  @Autowired ProduceOrderService produceOrderService) {
         transactionListener = new TransactionListenerImpl(produceOrderService);
         // 初始化 事务生产者
-        producer = new TransactionMQProducer(jms.getOrderTopic());
+        producer = new TransactionMQProducer("order_topic");
         // 添加服务器地址
-        producer.setNamesrvAddr(jms.getNameServer());
+        producer.setNamesrvAddr("127.0.0.1:9876");
         // 添加事务监听器
         producer.setTransactionListener(transactionListener);
         // 添加自定义线程池

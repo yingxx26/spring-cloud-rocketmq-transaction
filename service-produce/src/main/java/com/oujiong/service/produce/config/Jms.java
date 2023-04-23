@@ -13,7 +13,6 @@ import org.springframework.context.annotation.Configuration;
  * @date 2019/7/15 下午11:30
  */
 @Data
-@Configuration
 public class Jms {
 
     /**
