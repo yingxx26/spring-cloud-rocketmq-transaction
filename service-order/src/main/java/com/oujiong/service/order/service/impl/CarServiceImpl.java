@@ -47,8 +47,8 @@ public class CarServiceImpl implements CarService {
 
     public MytestCarInout getCarInout(String carNum, String bId) {
         QueryWrapper query = new QueryWrapper<>();
-        query.eq("car_num", carNum);
-        query.eq("b_id", bId);
+        query.eq("carnum", carNum);
+        query.eq("bid", bId);
         MytestCarInout mytestCarInout = mytestCarInoutMapper.selectOne(query);
         return mytestCarInout;
     }
@@ -56,8 +56,8 @@ public class CarServiceImpl implements CarService {
     public int updateCarInout(MytestCarInout mytestCarInout) {
 
         QueryWrapper query = new QueryWrapper<>();
-        query.eq("car_num", mytestCarInout.getCarnum());
-        query.eq("b_id", mytestCarInout.getBid());
+        query.eq("carnum", mytestCarInout.getCarnum());
+        query.eq("bid", mytestCarInout.getBid());
 
         MytestCarInout entity = new MytestCarInout();
         entity.setStatuscd("已开闸");
@@ -68,8 +68,8 @@ public class CarServiceImpl implements CarService {
     public int updateCarInoutBack(MytestCarInout mytestCarInout) {
 
         QueryWrapper query = new QueryWrapper<>();
-        query.eq("car_num", mytestCarInout.getCarnum());
-        query.eq("b_id", mytestCarInout.getBid());
+        query.eq("carnum", mytestCarInout.getCarnum());
+        query.eq("bid", mytestCarInout.getBid());
 
         MytestCarInout entity = new MytestCarInout();
         entity.setStatuscd("回滚");

@@ -126,6 +126,7 @@ class TransactionListenerImpl implements TransactionListener {
         }
         MytestCarInout mytestCarInout = new MytestCarInout();
         mytestCarInout.setCarnum(carNum);
+        mytestCarInout.setBid(bId);
         MytestPayFee mytestPayFee = new MytestPayFee();
         mytestPayFee.setBid(bId);
         mytestPayFee.setAmount(carCost);

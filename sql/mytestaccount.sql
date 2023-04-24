@@ -1,17 +1,17 @@
 /*
  Navicat Premium Data Transfer
 
- Source Server         : local
+ Source Server         : localhost
  Source Server Type    : MySQL
- Source Server Version : 80029
+ Source Server Version : 80028
  Source Host           : localhost:3306
- Source Schema         : pbdtxbank2
+ Source Schema         : mytestaccount
 
  Target Server Type    : MySQL
- Target Server Version : 80029
+ Target Server Version : 80028
  File Encoding         : 65001
 
- Date: 24/04/2023 17:32:07
+ Date: 24/04/2023 18:44:25
 */
 
 SET NAMES utf8mb4;

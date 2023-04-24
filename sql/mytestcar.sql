@@ -1,17 +1,17 @@
 /*
  Navicat Premium Data Transfer
 
- Source Server         : local
+ Source Server         : localhost
  Source Server Type    : MySQL
- Source Server Version : 80029
+ Source Server Version : 80028
  Source Host           : localhost:3306
- Source Schema         : pbdtxbank1
+ Source Schema         : mytestcar
 
  Target Server Type    : MySQL
- Target Server Version : 80029
+ Target Server Version : 80028
  File Encoding         : 65001
 
- Date: 24/04/2023 17:32:01
+ Date: 24/04/2023 18:44:32
 */
 
 SET NAMES utf8mb4;
@@ -79,7 +79,7 @@ CREATE TABLE `mytest_pay_fee`  (
   INDEX `idx_bpf_b_id`(`bid`) USING BTREE,
   INDEX `idx_pf_fee_id`(`feeid`) USING BTREE,
   INDEX `idx_pf_b_id`(`bid`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of mytest_pay_fee

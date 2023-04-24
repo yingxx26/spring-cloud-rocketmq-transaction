@@ -12,7 +12,7 @@ spring:
   application:
     name: order-service
   datasource:
-    url: jdbc:mysql://127.0.0.1:3306/pbdtxbank1?serverTimezone=UTC&useSSL=false&characterEncoding=UTF8
+    url: jdbc:mysql://127.0.0.1:3306/mytestcar?serverTimezone=UTC&useSSL=false&characterEncoding=UTF8
     username: root
     password: 123456
     driver-class-name: com.mysql.cj.jdbc.Driver
