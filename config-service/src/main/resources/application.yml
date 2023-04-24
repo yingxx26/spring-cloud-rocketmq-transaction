@@ -20,7 +20,7 @@
      driver-class-name: com.mysql.jdbc.Driver
      url: jdbc:mysql://127.0.0.1/config
      username: root
-     password: root
+     password: 123456
  #####################################################################################################
 
 

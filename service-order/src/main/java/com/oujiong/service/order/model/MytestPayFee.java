@@ -14,6 +14,7 @@ public class MytestPayFee implements Serializable {
     private String b_id;
     //费用类型，物业费，停车费
     private String fee_type_cd;
+    private String car_num;
     //小区ID
     private String community_id;
     //付款方ID

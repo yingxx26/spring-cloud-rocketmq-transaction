@@ -11,6 +11,9 @@ import org.apache.rocketmq.common.message.MessageExt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.Date;
+import java.util.Map;
+
 
 /**
  * @author xub
@@ -38,10 +41,11 @@ public class CarConsumer {
             MessageExt msg = msgs.get(0);
             String message = new String(msgs.get(0).getBody());
             JSONObject jsonObject = JSONObject.parseObject(message);
-            Integer userId = jsonObject.getInteger("userId");
-            Integer carNum = jsonObject.getInteger("carNum");
+            String bId = jsonObject.getString("bId");
+            String carNum = jsonObject.getString("carNum");
+            String carCost = jsonObject.getString("carCost");
             String key = msg.getKeys();
-            log.info("消费端消费消息，商品ID={},销售数量={}",userId,carNum);
+            log.info("车牌号={},费用={}",carNum,carCost);
             try {
                 //produceService.updateStore(productId, total, key);
                 return ConsumeConcurrentlyStatus.CONSUME_SUCCESS;

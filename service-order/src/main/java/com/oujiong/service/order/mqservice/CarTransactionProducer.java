@@ -1,18 +1,27 @@
 package com.oujiong.service.order.mqservice;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.oujiong.service.order.model.MytestCarInout;
+import com.oujiong.service.order.model.MytestPayFee;
 import com.oujiong.service.order.service.CarService;
 import com.oujiong.service.order.service.ProduceOrderService;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang.StringUtils;
 import org.apache.rocketmq.client.exception.MQClientException;
 import org.apache.rocketmq.client.producer.LocalTransactionState;
 import org.apache.rocketmq.client.producer.TransactionListener;
 import org.apache.rocketmq.client.producer.TransactionMQProducer;
 import org.apache.rocketmq.common.message.Message;
 import org.apache.rocketmq.common.message.MessageExt;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.math.BigDecimal;
+import java.util.Date;
+import java.util.Map;
 import java.util.concurrent.*;
 
 
@@ -101,10 +110,38 @@ class TransactionListenerImpl implements TransactionListener {
         this.carService = carService;
     }
 
+    @SneakyThrows
     @Override
     public LocalTransactionState executeLocalTransaction(Message msg, Object arg) {
+        String carNum = (String) ((Map) arg).get("carNum");
+        Date startTime = (Date) ((Map) arg).get("startTime");
+        Date endTime = (Date) ((Map) arg).get("endTime");
+        String inoutId = (String) ((Map) arg).get("inoutId");
+        String bId = (String) ((Map) arg).get("bId");
+        BigDecimal carCost = (BigDecimal) ((Map) arg).get("carCost");
         //开启道闸
-        //设置开闸状态为成功
+        boolean open = true;
+        if (!open) {
+            throw new Exception("开闸失败");
+        }
+        MytestCarInout mytestCarInout = new MytestCarInout();
+        mytestCarInout.setCar_num(carNum);
+        MytestPayFee mytestPayFee = new MytestPayFee();
+        mytestPayFee.setB_id(bId);
+        mytestPayFee.setAmount(carCost);
+        mytestPayFee.setEnd_time(endTime);
+        //真正要做的事  更新订单，设置开闸状态为成功
+        try {
+            carService.updateOrder(mytestCarInout, mytestPayFee);
+        } catch (Exception e) {
+            e.printStackTrace();
+            //设置对应的stockLog为回滚状态
+            MytestCarInout mytestCarInoutback = new MytestCarInout();
+            mytestCarInoutback.setCar_num(carNum);
+            mytestCarInoutback.setB_id(bId);
+            carService.updateCarInoutBack(mytestCarInoutback);
+            return LocalTransactionState.ROLLBACK_MESSAGE;
+        }
         return LocalTransactionState.COMMIT_MESSAGE;
     }
 
@@ -117,7 +154,21 @@ class TransactionListenerImpl implements TransactionListener {
     @Override
     public LocalTransactionState checkLocalTransaction(MessageExt msg) {
 
-        //根据是否开闸成功，来判断要返回COMMIT,ROLLBACK还是继续UNKNOWN
-        return LocalTransactionState.COMMIT_MESSAGE;
+        //根据是否扣减库存成功，来判断要返回COMMIT,ROLLBACK还是继续UNKNOWN
+        String jsonString = new String(msg.getBody());
+        Map<String, Object> map = JSON.parseObject(jsonString, Map.class);
+        String carNum = (String) map.get("carNum");
+        String inoutId = (String) map.get("inoutId");
+        String bId = (String) map.get("bId");
+        MytestCarInout carInout = carService.getCarInout(inoutId, bId);
+        if (carInout == null) {
+            return LocalTransactionState.UNKNOW;
+        }
+        if (StringUtils.equals(carInout.getStatus_cd(), "已开闸")) {
+            return LocalTransactionState.COMMIT_MESSAGE;
+        } else if (StringUtils.equals(carInout.getStatus_cd(), "待开闸")) {
+            return LocalTransactionState.UNKNOW;
+        }
+        return LocalTransactionState.ROLLBACK_MESSAGE;
     }
 }
