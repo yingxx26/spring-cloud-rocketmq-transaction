@@ -33,7 +33,7 @@ public class CarServiceImpl implements CarService {
 
     public MytestPayFee getPayFee(String carNum) {
         QueryWrapper query = new QueryWrapper<>();
-        query.eq("car_num", carNum);
+        query.eq("carnum", carNum);
         MytestPayFee mytestPayFee = mytestPayFeeMapper.selectOne(query);
         return mytestPayFee;
     }
@@ -56,11 +56,11 @@ public class CarServiceImpl implements CarService {
     public int updateCarInout(MytestCarInout mytestCarInout) {
 
         QueryWrapper query = new QueryWrapper<>();
-        query.eq("car_num", mytestCarInout.getCar_num());
-        query.eq("b_id", mytestCarInout.getB_id());
+        query.eq("car_num", mytestCarInout.getCarnum());
+        query.eq("b_id", mytestCarInout.getBid());
 
         MytestCarInout entity = new MytestCarInout();
-        entity.setStatus_cd("已开闸");
+        entity.setStatuscd("已开闸");
         int update1 = mytestCarInoutMapper.update(entity, query);
         return update1;
     }
@@ -68,11 +68,11 @@ public class CarServiceImpl implements CarService {
     public int updateCarInoutBack(MytestCarInout mytestCarInout) {
 
         QueryWrapper query = new QueryWrapper<>();
-        query.eq("car_num", mytestCarInout.getCar_num());
-        query.eq("b_id", mytestCarInout.getB_id());
+        query.eq("car_num", mytestCarInout.getCarnum());
+        query.eq("b_id", mytestCarInout.getBid());
 
         MytestCarInout entity = new MytestCarInout();
-        entity.setStatus_cd("回滚");
+        entity.setStatuscd("回滚");
         int update1 = mytestCarInoutMapper.update(entity, query);
         return update1;
     }
@@ -81,12 +81,12 @@ public class CarServiceImpl implements CarService {
     public void updateOrder(MytestCarInout mytestCarInout, MytestPayFee mytestPayFee) {
 
         QueryWrapper query = new QueryWrapper<>();
-        query.eq("carNum", mytestCarInout.getCar_num());
-        query.eq("bId", mytestPayFee.getB_id());
+        query.eq("carNum", mytestCarInout.getCarnum());
+        query.eq("bId", mytestPayFee.getBid());
 
 
         MytestPayFee entity = new MytestPayFee();
-        entity.setEnd_time(mytestCarInout.getOut_time());
+        entity.setEndtime(mytestCarInout.getOuttime());
         entity.setState("支付完成");
         entity.setAmount(mytestPayFee.getAmount());
         int update1 = mytestPayFeeMapper.update(entity, query);

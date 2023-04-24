@@ -40,32 +40,33 @@ public class CarController {
 
 
     /**
-     * 商品下单接口
+     * 开门接口
      *
-     * @param userId    用户ID
-     * @param carNum  车ID
+     * @param
+     * @param carNum 车ID
      */
-    @RequestMapping("save")
-    public Object save(String userId, String carNum) throws MQClientException {
+    @RequestMapping("open")
+    public Object open(String carNum) throws MQClientException {
 
         //查询订单
         MytestPayFee payFee = carService.getPayFee(carNum);
         //计算费用（可否放后面）
-        Date start_time = payFee.getStart_time();
-        Date end_time =new Date();
+        Date start_time = payFee.getStarttime();
+        Date end_time = new Date();
         //取出时间，计算费用
-        BigDecimal carCost=new BigDecimal("10");
+        BigDecimal carCost = new BigDecimal("10");
         //保存开闸记录初始状态，返回记录id
-        MytestCarInout mytestCarInout=new MytestCarInout();
-        mytestCarInout.setCar_num(carNum);
-        mytestCarInout.setB_id(payFee.getB_id());
-        mytestCarInout.setOut_time(end_time);
-        mytestCarInout.setStatus_cd("待开闸");
+        MytestCarInout mytestCarInout = new MytestCarInout();
+        mytestCarInout.setCarnum(carNum);
+        mytestCarInout.setBid(payFee.getBid());
+        mytestCarInout.setOuttime(end_time);
+        mytestCarInout.setStatuscd("待开闸");
+
         MytestCarInout mytestCarInoutDB = carService.saveCarInout(mytestCarInout);
-        String inout_id = mytestCarInoutDB.getInout_id();
-        String bId=payFee.getB_id();
+        Integer inout_id = mytestCarInoutDB.getInoutid();
+        String bId = payFee.getBid();
         //发送消息
-        boolean issuccess= getSendResult(carNum, start_time, end_time, inout_id,bId,carCost);
+        boolean issuccess = getSendResult(carNum, start_time, end_time, inout_id, bId, carCost);
 
         if (issuccess) {
             return "成功";
@@ -73,7 +74,7 @@ public class CarController {
         return "失败";
     }
 
-    private boolean getSendResult(String carNum, Date start_time, Date end_time, String inout_id, String bId,BigDecimal carCost) throws MQClientException {
+    private boolean getSendResult(String carNum, Date start_time, Date end_time, Integer inout_id, String bId, BigDecimal carCost) throws MQClientException {
         //通过uuid 当key
         String uuid = UUID.randomUUID().toString().replace("_", "");
 
@@ -98,11 +99,11 @@ public class CarController {
             e.printStackTrace();
             return false;
         }
-        if(sendResult.getLocalTransactionState() == LocalTransactionState.ROLLBACK_MESSAGE){
+        if (sendResult.getLocalTransactionState() == LocalTransactionState.ROLLBACK_MESSAGE) {
             return false;
-        }else if(sendResult.getLocalTransactionState() == LocalTransactionState.COMMIT_MESSAGE){
+        } else if (sendResult.getLocalTransactionState() == LocalTransactionState.COMMIT_MESSAGE) {
             return true;
-        }else{
+        } else {
             return false;
         }
     }

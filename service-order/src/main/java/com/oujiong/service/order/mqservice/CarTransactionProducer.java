@@ -125,11 +125,11 @@ class TransactionListenerImpl implements TransactionListener {
             throw new Exception("开闸失败");
         }
         MytestCarInout mytestCarInout = new MytestCarInout();
-        mytestCarInout.setCar_num(carNum);
+        mytestCarInout.setCarnum(carNum);
         MytestPayFee mytestPayFee = new MytestPayFee();
-        mytestPayFee.setB_id(bId);
+        mytestPayFee.setBid(bId);
         mytestPayFee.setAmount(carCost);
-        mytestPayFee.setEnd_time(endTime);
+        mytestPayFee.setEndtime(endTime);
         //真正要做的事  更新订单，设置开闸状态为成功
         try {
             carService.updateOrder(mytestCarInout, mytestPayFee);
@@ -137,8 +137,8 @@ class TransactionListenerImpl implements TransactionListener {
             e.printStackTrace();
             //设置对应的stockLog为回滚状态
             MytestCarInout mytestCarInoutback = new MytestCarInout();
-            mytestCarInoutback.setCar_num(carNum);
-            mytestCarInoutback.setB_id(bId);
+            mytestCarInoutback.setCarnum(carNum);
+            mytestCarInoutback.setBid(bId);
             carService.updateCarInoutBack(mytestCarInoutback);
             return LocalTransactionState.ROLLBACK_MESSAGE;
         }
@@ -164,9 +164,9 @@ class TransactionListenerImpl implements TransactionListener {
         if (carInout == null) {
             return LocalTransactionState.UNKNOW;
         }
-        if (StringUtils.equals(carInout.getStatus_cd(), "已开闸")) {
+        if (StringUtils.equals(carInout.getStatuscd(), "已开闸")) {
             return LocalTransactionState.COMMIT_MESSAGE;
-        } else if (StringUtils.equals(carInout.getStatus_cd(), "待开闸")) {
+        } else if (StringUtils.equals(carInout.getStatuscd(), "待开闸")) {
             return LocalTransactionState.UNKNOW;
         }
         return LocalTransactionState.ROLLBACK_MESSAGE;

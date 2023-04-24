@@ -25,14 +25,14 @@
     </dependency>
 
     <!--连接msql数据库相关jar包-->
-    <dependency>
+    <!--<dependency>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-jdbc</artifactId>
-    </dependency>
-    <dependency>
+    </dependency>-->
+    <!--<dependency>
         <groupId>mysql</groupId>
         <artifactId>mysql-connector-java</artifactId>
         <version>5.1.21</version>
-    </dependency>
+    </dependency>-->
 </dependencies>
 </project>

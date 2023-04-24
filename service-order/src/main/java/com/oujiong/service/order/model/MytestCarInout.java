@@ -1,5 +1,7 @@
 package com.oujiong.service.order.model;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -8,20 +10,20 @@ import java.util.Date;
 @Data
 public class MytestCarInout implements Serializable {
 	//进出ID
-	private String inout_id;
+	private Integer inoutid;
 	//业务Id
-	private String b_id;
+	private String bid;
 	//小区ID
-	private String community_id;
+	private String communityid;
 	//车牌号
-	private String car_num;
+	private String carnum;
 	//状态，100300 进场状态 100400 支付完成 100500 离场状态 100600 支付超时重新支付
 	private String state;
 	//进场时间
-	private Date in_time;
+	private Date intime;
 	//离场时间
-	private Date out_time;
+	private Date outtime;
 	//创建时间
-	private Date create_time;
-	private String status_cd;
+	private Date createtime;
+	private String statuscd;
 }

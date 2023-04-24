@@ -11,6 +11,11 @@ eureka:
 spring:
   application:
     name: product-service
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    password: 123456
+    url: jdbc:mysql://127.0.0.1:3306/pbdtxbank2?serverTimezone=UTC&useSSL=false&characterEncoding=UTF8
+    username: root
   #指定从哪个配置中心读取
 
 

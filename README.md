@@ -6,6 +6,7 @@ cmd
 
 http://localhost:9001/api/v1/order/save?userId=1&productId=1&total=4
 
+http://localhost:9001/api/v1/car/open?carNum=yxx 
 
 # <center>RocketMQ实现分布式事务</center>
 
